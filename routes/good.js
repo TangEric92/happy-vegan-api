@@ -10,16 +10,17 @@ router.post("/publish", async (req, res) => {
     const price = req.body.price;
     const address = req.body.address;
     const loc = req.body.loc;
+    const review = req.body.review;
+
     if (title && description && price) {
       const good = new Good({
         title: title,
         description: description,
-        photos: photos,
-        price: price,
-        address: address,
-        loc: loc,
-        ratingValue: ratingValue,
-        review: review
+        //photos: photos,
+        price: price
+        //address: address,
+        //loc: loc,
+        //review: review
       });
       await good.save();
       res.json(good);

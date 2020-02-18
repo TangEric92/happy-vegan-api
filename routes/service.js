@@ -8,7 +8,6 @@ router.post("/publish", async (req, res) => {
     const description = req.body.description;
     const photos = req.body.photos;
     const price = req.body.price;
-    const review = req.body.review;
     if (title && description && price) {
       const service = new Service({
         title: title,
