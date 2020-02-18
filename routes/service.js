@@ -9,7 +9,7 @@ router.post("/publish", async (req, res) => {
     const photos = req.body.photos;
     const price = req.body.price;
     const review = req.body.review;
-    if (title && description && photos && price && city && loc) {
+    if (title && description && price) {
       const service = new Service({
         title: title,
         description: description,
