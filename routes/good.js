@@ -7,7 +7,7 @@ router.post("/publish", async (req, res) => {
     const title = req.body.title;
     const description = req.body.description;
     const photos = req.body.photos;
-    const price = req.body.price;
+    const price = req.body.price ? req.body.price : 0;
     const address = req.body.address;
     const loc = req.body.loc;
     const review = req.body.review;
@@ -17,7 +17,7 @@ router.post("/publish", async (req, res) => {
         title: title,
         description: description,
         //photos: photos,
-        price: price ? price : 0
+        price: price
         //address: address,
         //loc: loc,
         //review: review
