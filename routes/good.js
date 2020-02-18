@@ -17,7 +17,7 @@ router.post("/publish", async (req, res) => {
         title: title,
         description: description,
         //photos: photos,
-        price: price
+        price: price ? price : 0
         //address: address,
         //loc: loc,
         //review: review
