@@ -35,7 +35,7 @@ router.post("/publish", async (req, res) => {
 router.get("/:id", async (req, res) => {
   const id = req.query.id;
   try {
-    const good = await Good.find();
+    const good = await Good.findOne(id);
     res.json(good);
   } catch (error) {
     res.status(400).json({ error: error.message });
