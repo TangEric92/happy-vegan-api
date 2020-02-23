@@ -137,7 +137,7 @@ router.put("/edit", async (req, res) => {
   try {
     const user = await UserModel.findOne({ token: token.split(" ")[1] }); // Split pour enlever le "Bearer "
     // On transforme la date en format timestamps (nbr de milisecond depuis 1970-xx-xx)
-    const lastConnexion = Date.parse(user.lastConnexion);
+    //const lastConnexion = Date.parse(user.lastConnexion);
     // On recupere la date de maintenant en timestamps
     const currentDate = Date.now();
     // On regarde si ca n'a pas depassé 10sec (ou 10.000 ms)
