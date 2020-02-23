@@ -26,7 +26,7 @@ router.post("/sign_up", async (req, res) => {
   const salt = uid2(16); // On genere une chaine de caractere de taille 16
 
   const hash = SHA256(password + salt).toString(encBase64); // On melange le password et le salt et on les encrypt
-
+  console.log(email);
   try {
     const user = new UserModel({
       account: {
@@ -124,8 +124,10 @@ const uploadPictures = (req, res, next) => {
 };
 
 router.put("/edit", async (req, res) => {
+  console.log(req);
   const userId = req.params.id;
   const token = req.body.token;
+  console.log(token);
   if (!token) {
     return res.status(401).json({
       error: {
@@ -135,10 +137,11 @@ router.put("/edit", async (req, res) => {
   }
 
   try {
-    const user = await UserModel.findOne({ token: token.split(" ")[1] }); // Split pour enlever le "Bearer "
+    const user = await UserModel.findOne({ token: token }); // Split pour enlever le "Bearer "
     // On transforme la date en format timestamps (nbr de milisecond depuis 1970-xx-xx)
     //const lastConnexion = Date.parse(user.lastConnexion);
     // On recupere la date de maintenant en timestamps
+    console.log(user);
     const currentDate = Date.now();
     // On regarde si ca n'a pas depassé 10sec (ou 10.000 ms)
     /*
