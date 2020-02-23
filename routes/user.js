@@ -125,7 +125,7 @@ const uploadPictures = (req, res, next) => {
 
 router.put("/edit", async (req, res) => {
   const userId = req.params.id;
-  const token = req.body.authorization;
+  const token = req.body.token;
   if (!token) {
     return res.status(401).json({
       error: {
