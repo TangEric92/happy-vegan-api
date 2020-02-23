@@ -137,11 +137,10 @@ router.put("/edit", async (req, res) => {
   }
 
   try {
-    const user = await UserModel.findOne({ token: token }); // Split pour enlever le "Bearer "
+    const user = await UserModel.findOne({ token: token });
     // On transforme la date en format timestamps (nbr de milisecond depuis 1970-xx-xx)
     //const lastConnexion = Date.parse(user.lastConnexion);
     // On recupere la date de maintenant en timestamps
-    console.log(user);
     const currentDate = Date.now();
     // On regarde si ca n'a pas depassé 10sec (ou 10.000 ms)
     /*
@@ -168,7 +167,7 @@ router.put("/edit", async (req, res) => {
       if (email) {
         user.email = email;
       }
-
+      await user.save();
       return res.json(
         _.pick(user, ["_id", "account", "lastConnexion", "token"])
       ); // On renvoit une selection de key au client
