@@ -169,7 +169,9 @@ router.put("/edit", async (req, res) => {
         user.email = email;
       }
 
-      return res.json(_.pick(user, ["_id", "account", "lastConnexion"])); // On renvoit une selection de key au client
+      return res.json(
+        _.pick(user, ["_id", "account", "lastConnexion", "token"])
+      ); // On renvoit une selection de key au client
     }
     return res.status(401).json({
       error: {
