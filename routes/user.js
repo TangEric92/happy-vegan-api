@@ -7,6 +7,15 @@ const _ = require("lodash");
 const router = express.Router();
 const UserModel = require("../models/User"); // Require en dernier car il est fait par nous, et on a moins confiance en nous qu'aux autres
 
+// Importation de Cloudinary
+var cloudinary = require("cloudinary");
+// Configuration de Cloudinary
+cloudinary.config({
+  cloud_name: "lereacteur",
+  api_key: 249285873623283,
+  api_secret: "3uAw-nmX8WpLtp-hWLyOdWeHpqo"
+});
+
 router.post("/sign_up", async (req, res) => {
   const password = req.body.password;
   const username = req.body.username;
@@ -67,6 +76,53 @@ router.post("/log_in", async (req, res) => {
   }
 });
 
+const uploadPictures = (req, res, next) => {
+  // J'initialise un tableau vide pour y stocker mes images uploadées
+  const pictures = [];
+  // J'initialise le nombre d'upload à zéro
+  let filesUploaded = 0;
+  // Et pour chaque fichier dans le tableau, je crée un upload vers Cloudinary
+  const files = Object.keys(req.files);
+  if (files.length) {
+    files.forEach(fileKey => {
+      // Je crée un nom spécifique pour le fichier
+      const name = uid2(16);
+      cloudinary.v2.uploader.upload(
+        req.files[fileKey].path,
+        {
+          // J'assigne un dossier spécifique dans Cloudinary pour chaque utilisateur
+          public_id: `leboncoin/${req.user._id}/${name}`
+        },
+        (error, result) => {
+          console.log(error, result);
+          // Si j'ai une erreur avec l'upload, je sors de ma route
+          if (error) {
+            return res.status(500).json({ error });
+          }
+          // Sinon, je push mon image dans le tableau
+          pictures.push(result.secure_url);
+          // Et j'incrémente le nombre d'upload
+          filesUploaded++;
+          console.log("-------\n", result);
+          // Si le nombre d'uploads est égal au nombre de fichiers envoyés...
+          if (filesUploaded === files.length) {
+            /* res
+                        .status(200)
+                        .json({message: `You've uploaded ${filesUploaded} files.`}); */
+            // ... je stocke les images dans l'objet `req`...
+            req.pictures = pictures;
+            // ... et je poursuis ma route avec `next()`
+            next();
+          }
+        }
+      );
+    });
+  } else {
+    // Pas de fichier à uploader ? Je poursuis ma route avec `next()`.
+    next();
+  }
+};
+
 router.put("/edit", async (req, res) => {
   const userId = req.params.id;
   const token = req.headers.authorization;
@@ -85,6 +141,7 @@ router.put("/edit", async (req, res) => {
     // On recupere la date de maintenant en timestamps
     const currentDate = Date.now();
     // On regarde si ca n'a pas depassé 10sec (ou 10.000 ms)
+    /*
     if (currentDate - lastConnexion > 10000) {
       return res.status(401).json({
         error: {
@@ -92,7 +149,7 @@ router.put("/edit", async (req, res) => {
         }
       });
     }
-
+    */
     if (user) {
       const biography = req.body.biography;
       if (biography) {
