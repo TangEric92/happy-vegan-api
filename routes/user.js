@@ -126,7 +126,7 @@ const uploadPictures = (req, res, next) => {
   }
 };
 
-router.put("/edit", uploadPictures, async (req, res) => {
+router.put("/edit", async (req, res) => {
   console.log(req);
   const userId = req.params.id;
   const token = req.body.token;
