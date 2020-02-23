@@ -81,6 +81,9 @@ const uploadPictures = (req, res, next) => {
   const pictures = [];
   // J'initialise le nombre d'upload à zéro
   let filesUploaded = 0;
+  if (!req.files) {
+    next();
+  }
   // Et pour chaque fichier dans le tableau, je crée un upload vers Cloudinary
   const files = Object.keys(req.files);
   if (files.length) {
@@ -152,6 +155,7 @@ router.put("/edit", uploadPictures, async (req, res) => {
       });
     }
     */
+
     if (user) {
       const biography = req.body.biography;
       if (biography) {
