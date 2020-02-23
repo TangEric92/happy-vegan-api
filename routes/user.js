@@ -123,7 +123,7 @@ const uploadPictures = (req, res, next) => {
   }
 };
 
-router.put("/edit", async (req, res) => {
+router.put("/edit", uploadPictures, async (req, res) => {
   console.log(req);
   const userId = req.params.id;
   const token = req.body.token;
@@ -167,7 +167,13 @@ router.put("/edit", async (req, res) => {
       if (email) {
         user.email = email;
       }
+      const pictures = req.pictures;
+      if (pictures) {
+        user.pictures = pictures;
+      }
+
       await user.save();
+
       return res.json(
         _.pick(user, ["_id", "account", "lastConnexion", "token"])
       ); // On renvoit une selection de key au client

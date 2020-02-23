@@ -12,6 +12,7 @@ const UserModel = mongoose.model("User", {
     type: String,
     unique: true
   },
+  pictures: Array,
   token: String,
   hash: String,
   salt: String,
